@@ -25,7 +25,6 @@ public class Main {
         .addLoginView()
         .addRegisterView()
         .addLoggedInView()
-        .addFilterView()
         .addRestaurantUseCase()
         .addAddReviewUseCase()
         .addDisplayReviewUseCase()

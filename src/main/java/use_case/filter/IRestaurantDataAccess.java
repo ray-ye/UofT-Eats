@@ -1,6 +1,7 @@
 package use_case.filter;
 
 import entity.Restaurant;
+
 import java.util.List;
 
 /**

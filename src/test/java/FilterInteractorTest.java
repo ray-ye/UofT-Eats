@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
-import use_case.filter.FilterInputData;
-import use_case.filter.FilterInteractor;
-import use_case.filter.FilterOutputBoundary;
-import use_case.filter.FilterOutputData;
 import use_case.filter.IRestaurantDataAccess;
 
 /**

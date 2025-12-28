@@ -20,7 +20,6 @@ public class ReviewPanel extends JPanel {
   private final JLabel authorLabel;
   private final JLabel creationDateLabel;
   private final JPanel footerPanel;
-  private final JButton translateButton;
   private final JTextArea contentText = new JTextArea(5, 20);
   private final JScrollPane contentArea;
   private final JPanel main;
@@ -55,11 +54,9 @@ public class ReviewPanel extends JPanel {
 
     footerPanel = new JPanel();
     footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.X_AXIS));
-    translateButton = new JButton("Translate");
-    translateButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
 
     footerPanel.add(Box.createHorizontalGlue());
-    footerPanel.add(translateButton);
     footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
     footerPanel.setBackground(this.getBackground());
 
@@ -83,11 +80,6 @@ public class ReviewPanel extends JPanel {
 
   public void setAuthorName(String name) {
     authorLabel.setText(name);
-  }
-
-  //** Let other views hook into this card's Translate button. */
-  public void addTranslateButtonListener(ActionListener listener) {
-    translateButton.addActionListener(listener);
   }
 
   public String getContent() {

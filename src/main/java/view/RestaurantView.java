@@ -9,9 +9,6 @@ import interface_adapter.display_reviews.DisplayReviewsState;
 import interface_adapter.display_reviews.DisplayReviewsStateList;
 import interface_adapter.display_reviews.DisplayReviewsViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.translation.TranslationController;
-import interface_adapter.translation.TranslationPresenter;
-import interface_adapter.translation.TranslationViewModel;
 import interface_adapter.view_restaurant.ViewRestaurantController;
 import interface_adapter.view_restaurant.ViewRestaurantState;
 import interface_adapter.view_restaurant.ViewRestaurantViewModel;
@@ -42,10 +39,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
-import use_case.translation.DeeplTranslationService;
-import use_case.translation.TranslationInputBoundary;
-import use_case.translation.TranslationInteractor;
-import use_case.translation.TranslationService;
 import view.panel_makers.PillIconTextPanel;
 import view.panel_makers.RestaurantTitlePanel;
 import view.panel_makers.ReviewPanel;
@@ -296,7 +289,6 @@ public class RestaurantView extends JPanel implements ActionListener, PropertyCh
 
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    System.out.println("RestaurantView.propertyChange fired: " + evt.getPropertyName());
 
     addReviewListener();
     addExitListener();
@@ -349,12 +341,6 @@ public class RestaurantView extends JPanel implements ActionListener, PropertyCh
             reviewState.getContent()
         );
 
-        // NEW: when user clicks "Translate" on this card,
-        // open the TranslationView window for this single review.
-        reviewPanel.addTranslateButtonListener(e ->
-            openTranslationWindowFor(reviewState)
-        );
-
         reviewsContainer.add(reviewPanel);
 
         Dimension preferredSize = reviewPanel.getPreferredSize();
@@ -387,58 +373,6 @@ public class RestaurantView extends JPanel implements ActionListener, PropertyCh
 
     revalidate();
     repaint();
-  }
-
-  private void openTranslationWindowFor(DisplayReviewsState reviewState) {
-    // Get DeepL API key
-    String key = System.getenv("DEEPL_API_KEY");
-    if (key == null || key.isBlank()) {
-      JOptionPane.showMessageDialog(
-          this,
-          "DEEPL_API_KEY is not set.",
-          "Translation unavailable",
-          JOptionPane.ERROR_MESSAGE
-      );
-      return;
-    }
-
-    // Build an INDEPENDENT translation stack for THIS window only
-    ViewManagerModel popupViewManager = new ViewManagerModel();   // local, not the app's
-    TranslationViewModel popupViewModel = new TranslationViewModel();
-    TranslationPresenter presenter =
-        new TranslationPresenter(popupViewManager, popupViewModel);
-    TranslationService translationService =
-        new DeeplTranslationService(key, false);
-    TranslationInputBoundary interactor =
-        new TranslationInteractor(translationService, presenter);
-    TranslationController popupController =
-        new TranslationController(interactor);
-
-    // Build a Review entity from the display state
-    String restaurantId = viewRestaurantViewModel.getState().getId();
-    String reviewId = "inline-" + System.currentTimeMillis(); // temporary id
-
-    String authorId = reviewState.getAuthorDisplayName();
-    String creationDate = reviewState.getCreationDate();
-    String content = reviewState.getContent();
-
-    // Make sure the constructor order matches your Review class
-    Review review = new Review(reviewId, authorId, restaurantId, content, creationDate);
-    java.util.List<Review> reviews = java.util.Collections.singletonList(review);
-
-    // Create TranslationView bound to THIS popup's view model / controller
-    TranslationView translationView =
-        new TranslationView(popupViewModel, popupViewManager, null);
-    translationView.setTranslationController(popupController);
-    translationView.setCurrentReviews(reviews);   // pre-fill "Original" area
-
-    // Pop up a separate window containing this TranslationView
-    JFrame frame = new JFrame("Translated review");
-    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    frame.setContentPane(translationView);
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 
 

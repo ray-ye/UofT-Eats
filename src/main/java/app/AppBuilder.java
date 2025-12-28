@@ -14,14 +14,8 @@ import interface_adapter.add_review.AddReviewViewModel;
 import interface_adapter.display_reviews.DisplayReviewsController;
 import interface_adapter.display_reviews.DisplayReviewsPresenter;
 import interface_adapter.display_reviews.DisplayReviewsViewModel;
-import interface_adapter.filter.FilterController;
-import interface_adapter.filter.FilterPresenter;
-import interface_adapter.filter.FilterViewModel;
 import interface_adapter.google_login.GoogleLoginController;
 import interface_adapter.google_login.GoogleLoginPresenter;
-import interface_adapter.list_search.ListSearchController;
-import interface_adapter.list_search.ListSearchPresenter;
-import interface_adapter.list_search.ListSearchViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
@@ -52,12 +46,8 @@ import use_case.custom_register.RegisterUserInteractor;
 import use_case.display_reviews.DisplayReviewsInputBoundary;
 import use_case.display_reviews.DisplayReviewsInteractor;
 import use_case.display_reviews.DisplayReviewsOutputBoundary;
-import use_case.filter.FilterInputBoundary;
-import use_case.filter.FilterInteractor;
 import use_case.google_login.GoogleLoginInputBoundary;
 import use_case.google_login.GoogleLoginInteractor;
-import use_case.list_search.ListSearchInputBoundary;
-import use_case.list_search.ListSearchInteractor;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutUserInteractor;
 import use_case.random_restaurant.RandomRestaurantInputBoundary;
@@ -65,7 +55,6 @@ import use_case.random_restaurant.RandomRestaurantInteractor;
 import use_case.view_restaurant.ViewRestaurantInputBoundary;
 import use_case.view_restaurant.ViewRestaurantInteractor;
 import use_case.view_restaurant.ViewRestaurantOutputBoundary;
-import view.FilterView;
 import view.LoggedInView;
 import view.LoginView;
 import view.RegisterView;
@@ -100,8 +89,7 @@ public class AppBuilder {
   private RegisterViewModel registerViewModel;
   private LoggedInViewModel loggedInViewModel;
 
-  // Filter
-  private FilterViewModel filterViewModel;
+
   // Restaurant info
   private ViewRestaurantViewModel viewRestaurantViewModel;
   private RestaurantView restaurantView;
@@ -241,14 +229,11 @@ public class AppBuilder {
    */
   @SuppressWarnings({"checkstyle:VariableDeclarationUsageDistance", "checkstyle:Indentation"})
   public AppBuilder addLoggedInView() {
-    ListSearchViewModel listSearchViewModel;
+
     // Create View Model (if not already created)
     if (loggedInViewModel == null) {
       loggedInViewModel = new LoggedInViewModel();
     }
-
-    // Create ListSearchViewModel
-    listSearchViewModel = new ListSearchViewModel();
 
     // Create Logout Presenter
     LogoutPresenter logoutPresenter = new LogoutPresenter(
@@ -277,19 +262,6 @@ public class AppBuilder {
     loggedInView.setViewManagerModel(viewManagerModel);
     loggedInView.setViewRestaurantViewModel(viewRestaurantViewModel);
 
-    // Set list search dependencies using setters
-    loggedInView.setListSearchViewModel(listSearchViewModel);
-    loggedInView.setHeartListener(heartListener);
-    loggedInView.setFilterViewName(FilterView.VIEW_NAME);
-
-    // Create ListSearch components
-    ListSearchPresenter listSearchPresenter = new ListSearchPresenter(listSearchViewModel);
-    ListSearchInputBoundary listSearchInteractor = new ListSearchInteractor(restaurantDataAccess,
-        listSearchPresenter);
-    ListSearchController listSearchController = new ListSearchController(listSearchInteractor);
-
-    loggedInView.setSearchController(listSearchController);
-    listSearchController.search("");
 
     // Add to card panel
     cardPanel.add(loggedInView, loggedInView.getViewName());
@@ -297,39 +269,6 @@ public class AppBuilder {
     return this;
   }
 
-  /**
-   * Adds the Filter View to the application.
-   *
-   * @return filter view.
-   */
-  public AppBuilder addFilterView() {
-    // Create View Model
-    if (filterViewModel == null) {
-      filterViewModel = new FilterViewModel();
-    }
-
-    // Create Presenter
-    FilterPresenter filterPresenter = new FilterPresenter(filterViewModel);
-
-    // Create Interactor
-    FilterInputBoundary filterInteractor = new FilterInteractor(
-        restaurantDataAccess,
-        filterPresenter
-    );
-
-    // Create Controller
-    FilterController filterController = new FilterController(filterInteractor);
-
-    // Create View
-    FilterView filterView = new FilterView(filterViewModel);
-    filterView.setFilterController(filterController);
-    filterView.setViewManagerModel(viewManagerModel);
-
-    // Add to card panel
-    cardPanel.add(filterView, filterView.getViewName());
-
-    return this;
-  }
 
   /**
    * Creates the Restaurant View.
