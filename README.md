@@ -7,11 +7,12 @@ Welcome to UofT-Eats, a restaurant review guide catered to University of Toronto
 
 | Log In | Main Page |
 | :---: | :---: |
-| <img src="src/main/resources/images/log_in_screen.png" alt="Log In" width="250"> | <img src="src/main/resources/images/main_screen.png" alt="Main Page" width="500"> |
+| <img src="src/main/resources/images/log_in_screen.png" alt="Log In" width="350"> | <img src="src/main/resources/images/main_screen.png" alt="Main Page" width="500"> |
 
 | Filter | Restaurant |
 | :---: | :---: |
 | ![Filter](src/main/resources/images/filter_screen.png) | ![Restaurant](src/main/resources/images/restaurant_screen.png) |
+
 ## User Stories
 
 * **Kenshin:** As a user, I want to register an account using a username and password or a Google account, so that my personal restaurant data is saved securely. As a user, I want to be able to log in and log out using my Google account or a username and password, so that I can log in on different devices and my account remains secure.
