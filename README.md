@@ -5,17 +5,13 @@ Welcome to UofT-Eats, a restaurant review guide catered to University of Toronto
 
 ## Screenshots
 
-### Log In
-![Log In](src/main/resources/images/log_in_screen.png)
+| Log In | Main Page |
+| :---: | :---: |
+| ![Log In](src/main/resources/images/log_in_screen.png) | ![Main Page](src/main/resources/images/main_screen.png) |
 
-### Main Page
-![Main Page](src/main/resources/images/main_screen.png)
-
-### Filter
-![Filter](src/main/resources/images/filter_screen.png)
-
-### Restaurant
-![Filter](src/main/resources/images/restaurant_screen.png)
+| Filter | Restaurant |
+| :---: | :---: |
+| ![Filter](src/main/resources/images/filter_screen.png) | ![Restaurant](src/main/resources/images/restaurant_screen.png) |
 
 ## User Stories
 
